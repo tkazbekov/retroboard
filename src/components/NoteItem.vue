@@ -1,18 +1,27 @@
 <template>
   <div class="note">
     <p class="note__text">{{ note.text }}</p>
-    <button class="note__vote">{{ note.votes }}</button>
+    <button class="note__vote" @click="vote">{{ note.votes }}</button>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Note } from "@/stores/column";
+import type { Note } from "@/models/Note";
 
 interface NoteProps {
   note: Note;
 }
 
-defineProps<NoteProps>();
+interface NoteEmits {
+  (event: "vote", value: Note) : void
+}
+
+const props = defineProps<NoteProps>();
+const emits = defineEmits<NoteEmits>();
+
+const vote = () => {
+  emits("vote", props.note)
+}
 </script>
 
 <style lang="scss">

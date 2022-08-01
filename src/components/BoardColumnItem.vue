@@ -18,6 +18,7 @@
         v-for="note of column.notes"
         :key="note.id"
         :note="note"
+        @vote="vote"
       ></NoteItem>
     </div>
   </div>
@@ -25,6 +26,7 @@
 
 <script lang="ts" setup>
 import type { Column } from "@/models/Column";
+import type { Note } from "@/models/Note";
 import type { Socket } from "socket.io-client";
 import { inject, ref } from "vue";
 import NoteItem from "./NoteItem.vue";
@@ -37,8 +39,6 @@ interface ColumnProps {
 
 const props = defineProps<ColumnProps>();
 
-const notes = props.column.notes;
-
 const newItemValue = ref("");
 
 const addItem = () => {
@@ -46,8 +46,11 @@ const addItem = () => {
     socket.emit("new_note", newItemValue.value, props.column.id);
     newItemValue.value = "";
   }
-  console.log("input!")
 };
+
+const vote = (note: Note) => {
+  socket.emit("vote", note.id)
+}
 
 </script>
 

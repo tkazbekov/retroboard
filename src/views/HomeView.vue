@@ -24,14 +24,14 @@ const boardStore = useBoardStore();
 
 
 socket.on("board_found", (res) => {
-  console.log("Board found!", res)
   boardStore.$patch({ board: res });
 })
 
 socket.on("note_update", (note: Note, columnId: string) => {
-  console.log(note, columnId);
   boardStore.addNoteAndSort(note, columnId)
 })
+
+socket.on("vote_update", (note: Note) => boardStore.setNoteVotes(note))
 
 socket.on("board_created", (id: string) => {
   router.push({ name: "board", params: { id: id } });
