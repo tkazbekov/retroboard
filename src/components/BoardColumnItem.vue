@@ -22,31 +22,33 @@
     </div>
   </div>
 </template>
-<script lang="ts"></script>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import type { Column } from "@/models/Column";
+import type { Socket } from "socket.io-client";
+import { inject, ref } from "vue";
 import NoteItem from "./NoteItem.vue";
-import { useColumnStore, type Column } from "@/stores/column";
+
+const socket = inject('socket') as Socket;
 
 interface ColumnProps {
-  columnId: number;
+  column: Column;
 }
 
 const props = defineProps<ColumnProps>();
 
-const columnStore = useColumnStore();
-
-const column: Column = columnStore.getColumnById(props.columnId);
+const notes = props.column.notes;
 
 const newItemValue = ref("");
 
 const addItem = () => {
   if (newItemValue.value.length) {
-    columnStore.addNote(props.columnId, newItemValue.value);
+    socket.emit("new_note", newItemValue.value, props.column.id);
     newItemValue.value = "";
   }
+  console.log("input!")
 };
+
 </script>
 
 <style>
