@@ -4,7 +4,7 @@ import { RouterView } from "vue-router";
 
 <template>
   <header>
-    <h1>Milrem retro stuff</h1>
+    <h1>Hello there!</h1>
   </header>
   <RouterView />
 </template>
